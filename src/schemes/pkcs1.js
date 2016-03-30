@@ -87,27 +87,27 @@ module.exports.makeScheme = function (key, options) {
         if (buffer.length < 4) {
             return null;
         }
+        if (buffer[0] !== 0) {
+            return null;
+        }
 
-        if (options.type === 1) {
-            if (buffer[0] !== 0 && buffer[1] !== 1) {
-                return null;
-            }
+        //if (options.type === 1) {
+        if (buffer[1] == 1) {
             i = 3;
             while (buffer[i] !== 0) {
                 if (buffer[i] != 0xFF || ++i >= buffer.length) {
                     return null;
                 }
             }
-        } else {
-            if (buffer[0] !== 0 && buffer[1] !== 2) {
-                return null;
-            }
+        } else if (buffer[1] == 2) {
             i = 3;
             while (buffer[i] !== 0) {
                 if (++i >= buffer.length) {
                     return null;
                 }
             }
+        } else {
+            return null;
         }
         return buffer.slice(i + 1, buffer.length);
     };
